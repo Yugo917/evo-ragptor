@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  sai-elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.1
+    container_name: sai-elasticsearch
+    ports:
+      - "9400:9200"
+    environment:
+      - node.name=elasticsearch
+      - cluster.name=es-docker-cluster
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200/"]
+      interval: 10s
+      timeout: 3s
+      retries: 30
+    networks:
+      - specialized-ai-chatbot
+
+  sai-kibana:
+    image: docker.elastic.co/kibana/kibana:7.12.1
+    container_name: sai-kibana
+    environment:
+      - xpack.security.enabled=false
+      - ELASTICSEARCH_HOSTS=["http://sai-elasticsearch:9200"]
+    ports:
+      - "5801:5601"
+    depends_on:
+      sai-elasticsearch:
+        condition: service_healthy
+    networks:
+      - specialized-ai-chatbot
+
+networks:
+  specialized-ai-chatbot:
+    driver: bridge
