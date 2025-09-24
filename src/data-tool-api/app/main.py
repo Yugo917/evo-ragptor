@@ -14,16 +14,12 @@ app = FastAPI(title="DATA TOOL API")
 
 # DI container setup
 container = Container()
-container.config.logger.update({
-    "host": "localhost",
-    "port": 9400,
-    "index": "data-tool-api",
-    "verify_certs": False,
-})
 app.container = container
 
 # Wire resolve dependencys
 container.wire(modules=[math_endpoints, text_endpoints, log_endpoints])
+
+container.http_logger_setup(app=app)
 
 # Include both routers
 app.include_router(math_router)

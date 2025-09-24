@@ -2,6 +2,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional, Any, Mapping
 from elasticsearch import Elasticsearch
+
+from app.common.logger.sinks.interface import ISink
 from ..models import LogEvent
 
 @dataclass(frozen=True)
@@ -15,7 +17,7 @@ class ElasticConfig:
     verify_certs: bool = False
     request_timeout: float = 3.0 
 
-class ElasticSink:
+class ElasticSink(ISink):
     """KISS: 1 event = 1 index() vers Elasticsearch."""
     def __init__(self, config: ElasticConfig) -> None:
         self._cfg = config

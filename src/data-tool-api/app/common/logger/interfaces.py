@@ -1,7 +1,8 @@
 from __future__ import annotations
-from typing import Protocol, Mapping, Any, Optional
+from abc import ABC
+from typing import Mapping, Any, Optional
 
-class ILogger(Protocol):
+class ILogger(ABC):
     """Minimal logging contract (KISS), now supporting exception overloads."""
 
     def debug(self, template_or_msg: str, props: Optional[Mapping[str, Any]] = None) -> None: ...
