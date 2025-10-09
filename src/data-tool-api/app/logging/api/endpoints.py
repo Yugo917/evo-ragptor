@@ -3,7 +3,7 @@ from dependency_injector.wiring import inject, Provide
 from app.common.logger.interfaces import ILogger
 from app.container import Container
 
-router = APIRouter(prefix="/logging")
+router = APIRouter(prefix="/logging", tags=["Logging"])
 
 @router.get("/log", summary="Log messages using all ILogger methods")
 @inject

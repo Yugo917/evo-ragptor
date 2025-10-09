@@ -4,7 +4,7 @@ from app.math.business.math_service import MathService
 from app.math.api.request_models import AdditionResult
 from app.container import Container
 
-router = APIRouter(prefix="/math")
+router = APIRouter(prefix="/math", tags=["Math"])
 
 @router.get(
     "/add",
